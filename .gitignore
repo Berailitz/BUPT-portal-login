@@ -1,6 +1,8 @@
 .vscode/
-log.txt
+log/
+portal-login.*.py
 portal-login.py
+!portal-login.default.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
