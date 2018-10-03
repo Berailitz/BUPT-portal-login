@@ -3,6 +3,9 @@ log/
 portal-login.*.py
 portal-login.py
 !portal-login.default.py
+portal-login.*.sh
+portal-login.sh
+!portal-login.default.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
