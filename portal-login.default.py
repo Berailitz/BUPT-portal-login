@@ -22,6 +22,7 @@ NETWORK_LINE = 'CUC-BRAS'  # 宽带线路，默认为中国联通
 LOG_PATH = 'portal_login.log'  # 日志文件的路径
 PROBE_URL = 'https://baidu.com'  # SSL needed.
 PROBE_MAX_TIMEOUT = 4
+MAX_TIME_TO_LOGIN = 30
 
 
 def set_logger(log_path):
@@ -90,11 +91,6 @@ def main():
                 })
                 if '成功登录' in response_out.text:
                     notifier.notify('准出认证通过')
-                    requests.post('http://10.3.8.217/login', data={
-                        'user': STUDENT_ID,
-                        'pass': PASSWORD,
-                        'NETWORK_LINE': NETWORK_LINE
-                    })
                     do_need_isp_auth = True
                 else:
                     notifier.notify('准出认证失败')
@@ -104,7 +100,12 @@ def main():
             notifier.notify('无需准入、准出认证')
             do_need_isp_auth = True
         if do_need_isp_auth:
-            for i in range(30):
+            requests.post('http://10.3.8.217/login', data={
+                'user': STUDENT_ID,
+                'pass': PASSWORD,
+                'NETWORK_LINE': NETWORK_LINE
+            })
+            for i in range(MAX_TIME_TO_LOGIN):
                 if requests.get('http://10.3.8.217/dial').json()['code'] == 0:
                     do_need_isp_auth = True
                     break
